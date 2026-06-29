@@ -27,6 +27,9 @@ qt_add_executable(vacuum-robot-controller
     src/VideoToolbar.h
     src/WorkspaceView.cpp
     src/WorkspaceView.h
+    src/Settings.cpp
+    src/Settings.h
+    resources/settings.qrc
 )
 
 target_link_libraries(vacuum-robot-controller PRIVATE

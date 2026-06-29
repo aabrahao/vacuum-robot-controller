@@ -19,6 +19,9 @@ public:
     QList<AbstractVideo *> sources() const;
     void initialize();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private slots:
     void addCamera();
     void openFile();

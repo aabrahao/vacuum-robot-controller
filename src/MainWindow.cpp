@@ -2,10 +2,12 @@
 #include "AbstractVideo.h"
 #include "CameraVideo.h"
 #include "MediaVideo.h"
+#include "Settings.h"
 #include "WorkspaceView.h"
 
 #include <QAction>
 #include <QCameraDevice>
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QKeySequence>
@@ -21,8 +23,12 @@ MainWindow::MainWindow(QWidget *parent)
     , m_status(new QLabel(this))
 {
     setWindowTitle(tr("Vacuum Robot Controller"));
-    resize(1280, 720);
-    setMinimumSize(800, 600);
+
+    Settings &settings = Settings::instance();
+    settings.load();
+    settings.apply(this);
+    settings.center(this);
+
     setCentralWidget(new QLabel(tr("Loading..."), this));
 
     createActions();
@@ -40,6 +46,12 @@ MainWindow::~MainWindow()
         m_workspace->detachAll();
     }
     qDeleteAll(m_sources);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    Settings::instance().capture(this);
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::initialize()
